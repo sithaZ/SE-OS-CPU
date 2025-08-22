@@ -1,0 +1,15 @@
+com\example\Database.class
+com\example\LoginController.class
+com\example\RulePageController.class
+com\example\SignUpController.class
+com\example\AboutUsPageController.class
+com\example\King.class
+com\example\App.class
+com\example\Knight.class
+com\example\Pawn.class
+com\example\Bishop.class
+com\example\Pieces.class
+com\example\HomePageController.class
+com\example\Rook.class
+com\example\Queen.class
+com\example\ChessController.class

@@ -1,0 +1,52 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "TestApp",
+            "request": "launch",
+            "mainClass": "com.example.TestApp",
+            "projectName": "demo"
+        },
+        {
+            "type": "java",
+            "name": "MainApp",
+            "request": "launch",
+            "mainClass": "com.example.MainApp",
+            "projectName": "demo"
+        },
+        {
+            "type": "java",
+            "name": "HelloApp",
+            "request": "launch",
+            "mainClass": "com.example.HelloApp",
+            "projectName": "demo"
+        },
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "com.example.App",
+            "projectName": "demo",
+            // VVV REPLACE THE OLD vmArgs WITH THIS VVV
+             "vmArgs": [
+        "--module-path",
+        "D:/javafx-sdk-24.0.1/lib", // The path to YOUR JavaFX SDK
+        "--add-modules",
+        "javafx.controls,javafx.fxml,javafx.media", // Added javafx.media here
+        "--add-exports=javafx.graphics/com.sun.javafx.tk=ALL-UNNAMED",
+        "--add-exports=javafx.graphics/com.sun.glass.ui=ALL-UNNAMED",
+        "--add-exports=javafx.base/com.sun.javafx=ALL-UNNAMED"
+    ]
+        }
+    ]
+}

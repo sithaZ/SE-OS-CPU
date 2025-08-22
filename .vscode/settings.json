@@ -1,0 +1,12 @@
+{
+  
+  // "java.project.sourcePaths": ["src/main/java"],
+  // "java.project.resourcePaths": [
+  //   "src/Resource"
+  // ],
+  // "java.debug.settings.onBuildFailureProceed": true
+  "java.configuration.updateBuildConfiguration": "automatic",
+    "javafx.modulePath": "D:\\JavaFX\\javafx-sdk-23.0.2\\lib",
+    "java.debug.settings.onBuildFailureProceed": true
+  
+}
