@@ -54,11 +54,15 @@ public class MainController {
     @FXML
     private TableColumn<Process, Number> waitingTimeColumn;
     @FXML
+    private TableColumn<Process, Number> responseTimeColumn;
+    @FXML
     private HBox ganttChartBox;
     @FXML
     private Label avgWaitingTimeLabel;
     @FXML
     private Label avgTurnaroundTimeLabel;
+    @FXML
+    private Label avgResponseTimeLabel;
 
     private final ObservableList<Process> processList = FXCollections.observableArrayList();
 
@@ -73,6 +77,8 @@ public class MainController {
                 .setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getTurnaroundTime()));
         waitingTimeColumn
                 .setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getWaitingTime()));
+        responseTimeColumn
+                .setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getResponseTime()));
 
         processTable.setItems(processList);
         processTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -152,6 +158,7 @@ public class MainController {
     private void updateTableAndAverages() {
         double totalWaitingTime = 0;
         double totalTurnaroundTime = 0;
+        double totalResponseTime = 0;
 
         if (processList.isEmpty())
             return;
@@ -159,11 +166,14 @@ public class MainController {
         for (Process p : processList) {
             totalWaitingTime += p.getWaitingTime();
             totalTurnaroundTime += p.getTurnaroundTime();
+            totalResponseTime += p.getResponseTime();
         }
 
         avgWaitingTimeLabel.setText(String.format("Average Waiting Time: %.2f", totalWaitingTime / processList.size()));
         avgTurnaroundTimeLabel
                 .setText(String.format("Average Turnaround Time: %.2f", totalTurnaroundTime / processList.size()));
+        avgResponseTimeLabel
+                .setText(String.format("Average Response Time: %.2f", totalResponseTime / processList.size()));
 
         processTable.refresh();
     }
@@ -197,6 +207,7 @@ public class MainController {
         quantumField.clear();
         avgWaitingTimeLabel.setText("Average Waiting Time: ");
         avgTurnaroundTimeLabel.setText("Average Turnaround Time: ");
+        avgResponseTimeLabel.setText("Average Response Time: ");
         algorithmComboBox.getSelectionModel().clearSelection();
     }
 

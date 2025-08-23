@@ -14,15 +14,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane style="-fx-padding: 10;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.MainController">
+<BorderPane style="-fx-padding: 10;"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.MainController">
 
     <top>
         <VBox alignment="CENTER" styleClass="header-box">
             <children>
                 <Label styleClass="white-header" text="Process Scheduling Solver" textFill="WHITE">
-               <font>
-                  <Font size="20.0" />
-               </font></Label>
+                    <font>
+                        <Font size="20.0" />
+                    </font>
+                </Label>
             </children>
             <BorderPane.margin>
                 <Insets bottom="10" />
@@ -91,6 +94,7 @@
                         <TableColumn fx:id="finishTimeColumn" text="Finish" />
                         <TableColumn fx:id="turnaroundTimeColumn" text="Turnaround" />
                         <TableColumn fx:id="waitingTimeColumn" text="Waiting" />
+                        <TableColumn fx:id="responseTimeColumn" text="Response" />
                     </columns>
                     <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -100,12 +104,14 @@
                 <Label styleClass="content-title" text="Results" />
                 <Label text="Gantt Chart:" />
                 <HBox fx:id="ganttChartBox" alignment="CENTER_LEFT">
-               <styleClass>
-                  <String fx:value="gantt-chart" />
-                  <String fx:value="card" />
-               </styleClass></HBox>
+                    <styleClass>
+                        <String fx:value="gantt-chart" />
+                        <String fx:value="card" />
+                    </styleClass>
+                </HBox>
                 <Label fx:id="avgWaitingTimeLabel" text="Average Waiting Time: " />
                 <Label fx:id="avgTurnaroundTimeLabel" text="Average Turnaround Time: " />
+                <Label fx:id="avgResponseTimeLabel" text="Average Response Time: " />
             </children>
         </VBox>
     </center>

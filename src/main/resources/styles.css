@@ -67,7 +67,7 @@
 }
 
 .action-button:hover {
-    -fx-background-color: linear-gradient(to bottom right, #e0f7fa, #000000);
+    -fx-background-color: linear-gradient(to bottom right, #000000, #000000);
 }
 
 .reset-button:hover {

@@ -4,49 +4,42 @@ import java.util.List;
 import com.example.model.Process;
 
 public class SRTScheduler {
-
     public static void schedule(List<Process> processes) {
-        // Initialize remaining burst time for all processes
-        for (Process p : processes) {
-            p.setRemainingBurstTime(p.getBurstTime());
-        }
-
         int currentTime = 0;
-        int completedCount = 0;
-        int totalProcesses = processes.size();
+        int completed = 0;
+        int n = processes.size();
+        
+        while (completed != n) {
+            int shortest = -1;
+            int minBurst = Integer.MAX_VALUE;
 
-        while (completedCount < totalProcesses) {
-            Process selectedProcess = null;
-            int minRemainingTime = Integer.MAX_VALUE;
-
-            // Find the process with the shortest remaining time that has arrived
-            for (Process p : processes) {
-                if (p.getArrivalTime() <= currentTime && p.getRemainingBurstTime() > 0 && p.getRemainingBurstTime() < minRemainingTime) {
-                    minRemainingTime = p.getRemainingBurstTime();
-                    selectedProcess = p;
+            for (int i = 0; i < n; i++) {
+                Process p = processes.get(i);
+                if (p.getArrivalTime() <= currentTime && p.getRemainingBurstTime() < minBurst && p.getRemainingBurstTime() > 0) {
+                    minBurst = p.getRemainingBurstTime();
+                    shortest = i;
                 }
             }
 
-            if (selectedProcess == null) {
-                // If no process is ready, advance time
+            if (shortest == -1) {
                 currentTime++;
                 continue;
             }
 
-            // Decrement remaining time for the selected process
-            selectedProcess.setRemainingBurstTime(selectedProcess.getRemainingBurstTime() - 1);
+            Process currentProcess = processes.get(shortest);
+             if (!currentProcess.hasStarted()) {
+                currentProcess.setResponseTime(currentTime - currentProcess.getArrivalTime());
+                currentProcess.setHasStarted(true);
+            }
+
+            currentProcess.setRemainingBurstTime(currentProcess.getRemainingBurstTime() - 1);
             currentTime++;
 
-            // Check if the process has completed
-            if (selectedProcess.getRemainingBurstTime() == 0) {
-                completedCount++;
-                int finishTime = currentTime;
-                int turnaroundTime = finishTime - selectedProcess.getArrivalTime();
-                int waitingTime = turnaroundTime - selectedProcess.getBurstTime();
-
-                selectedProcess.setFinishTime(finishTime);
-                selectedProcess.setTurnaroundTime(turnaroundTime);
-                selectedProcess.setWaitingTime(waitingTime);
+            if (currentProcess.getRemainingBurstTime() == 0) {
+                completed++;
+                currentProcess.setFinishTime(currentTime);
+                currentProcess.setTurnaroundTime(currentProcess.getFinishTime() - currentProcess.getArrivalTime());
+                currentProcess.setWaitingTime(currentProcess.getTurnaroundTime() - currentProcess.getBurstTime());
             }
         }
     }
