@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image; // Import the Image class
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -23,9 +24,13 @@ public class App extends Application {
         if (cssUrl != null) {
             scene.getStylesheets().add(cssUrl.toExternalForm());
         } else {
-
             System.err.println("Warning: Stylesheet 'styles.css' not found in resources.");
         }
+        
+    
+        Image icon = new Image(getClass().getResourceAsStream("/image/IconImage.jpg"));
+        stage.getIcons().add(icon);
+      
 
         stage.setTitle("CPU Scheduling Simulator");
         stage.setScene(scene);
@@ -37,7 +42,6 @@ public class App extends Application {
     }
 
     public static void setRoot(String string) {
-
         throw new UnsupportedOperationException("Unimplemented method 'setRoot'");
     }
 }
