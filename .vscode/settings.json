@@ -6,7 +6,7 @@
   // ],
   // "java.debug.settings.onBuildFailureProceed": true
   "java.configuration.updateBuildConfiguration": "automatic",
-    "javafx.modulePath": "D:\\JavaFX\\javafx-sdk-23.0.2\\lib",
+    "javafx.modulePath": "D:\\Code for Year 2 (Semester 2)\\Project OS CPU\\SE-OS-CPU\\javafx-sdk-24.0.2",
     "java.debug.settings.onBuildFailureProceed": true
   
 }

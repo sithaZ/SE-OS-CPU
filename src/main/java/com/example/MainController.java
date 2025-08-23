@@ -1,24 +1,33 @@
 package com.example;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 import com.example.model.Process;
 import com.example.scheduling.FcfsScheduler;
+import com.example.scheduling.MLFQScheduler;
 import com.example.scheduling.RoundRobinScheduler;
+import com.example.scheduling.SRTScheduler;
 import com.example.scheduling.SjfScheduler;
+
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 public class MainController {
 
@@ -68,7 +77,7 @@ public class MainController {
         processTable.setItems(processList);
         processTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        algorithmComboBox.getItems().addAll("FCFS", "SJF (Non-Preemptive)", "Round Robin");
+        algorithmComboBox.getItems().addAll("FCFS", "SJF (Non-Preemptive)", "Round Robin", "SRT (Preemptive)", "Multilevel Feedback Queue (MLFQ)");
 
         algorithmComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
             boolean isRoundRobin = "Round Robin".equals(newValue);
@@ -127,6 +136,12 @@ public class MainController {
                     showAlert(Alert.AlertType.ERROR, "Please enter a valid number for the time quantum.");
                     return;
                 }
+                break;
+            case "SRT (Preemptive)":
+                SRTScheduler.schedule(processesToSchedule);
+                break;
+            case "Multilevel Feedback Queue (MLFQ)":
+                MLFQScheduler.schedule(processesToSchedule);
                 break;
         }
 

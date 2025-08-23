@@ -10,7 +10,8 @@ public class Process {
     private final SimpleIntegerProperty finishTime;
     private final SimpleIntegerProperty turnaroundTime;
     private final SimpleIntegerProperty waitingTime;
-    private int remainingBurstTime; // Added for Round Robin
+    private int remainingBurstTime;
+    private int lastExecutionTime; 
 
     public Process(String name, int arrivalTime, int burstTime) {
         this.name = new SimpleStringProperty(name);
@@ -19,7 +20,8 @@ public class Process {
         this.finishTime = new SimpleIntegerProperty(0);
         this.turnaroundTime = new SimpleIntegerProperty(0);
         this.waitingTime = new SimpleIntegerProperty(0);
-        this.remainingBurstTime = burstTime; // Initialize remaining time
+        this.remainingBurstTime = burstTime;
+        this.lastExecutionTime = 0;
     }
 
     // Getters
@@ -30,10 +32,12 @@ public class Process {
     public int getTurnaroundTime() { return turnaroundTime.get(); }
     public int getWaitingTime() { return waitingTime.get(); }
     public int getRemainingBurstTime() { return remainingBurstTime; }
+    public int getLastExecutionTime() { return lastExecutionTime; }
 
     // Setters
     public void setFinishTime(int finishTime) { this.finishTime.set(finishTime); }
     public void setTurnaroundTime(int turnaroundTime) { this.turnaroundTime.set(turnaroundTime); }
     public void setWaitingTime(int waitingTime) { this.waitingTime.set(waitingTime); }
     public void setRemainingBurstTime(int remainingBurstTime) { this.remainingBurstTime = remainingBurstTime; }
+    public void setLastExecutionTime(int currentTime) { this.lastExecutionTime = currentTime; }
 }
