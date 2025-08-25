@@ -1,5 +1,7 @@
 package com.example;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -17,13 +19,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -65,6 +70,9 @@ public class MainController {
     private Label avgResponseTimeLabel;
 
     private final ObservableList<Process> processList = FXCollections.observableArrayList();
+    private TextField quantumField2;
+    private TextField agingField;
+    private Button exportButton;
 
     @FXML
     public void initialize() {
@@ -85,11 +93,58 @@ public class MainController {
 
         algorithmComboBox.getItems().addAll("FCFS", "SJF (Non-Preemptive)", "Round Robin", "SRT (Preemptive)", "Multilevel Feedback Queue (MLFQ)");
 
+        quantumField2 = new TextField();
+        agingField = new TextField();
+        quantumField.getParent().setVisible(false);
+        quantumField.getParent().setManaged(false);
+
         algorithmComboBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
             boolean isRoundRobin = "Round Robin".equals(newValue);
-            quantumField.getParent().setVisible(isRoundRobin);
-            quantumField.getParent().setManaged(isRoundRobin);
+            boolean isMLFQ = "Multilevel Feedback Queue (MLFQ)".equals(newValue);
+            Pane quantumPane = (Pane) quantumField.getParent();
+
+            if (isRoundRobin) {
+                quantumField.setPromptText("Time Quantum");
+                if (quantumPane.getChildren().contains(quantumField2)) {
+                    quantumPane.getChildren().remove(quantumField2);
+                }
+                if (quantumPane.getChildren().contains(agingField)) {
+                    quantumPane.getChildren().remove(agingField);
+                }
+            } else if (isMLFQ) {
+                quantumField.setPromptText("Quantum 1 (Q1)");
+                quantumField2.setPromptText("Quantum 2 (Q2)");
+                agingField.setPromptText("Aging Threshold");
+                if (!quantumPane.getChildren().contains(quantumField2)) {
+                    quantumPane.getChildren().add(quantumField2);
+                }
+                if (!quantumPane.getChildren().contains(agingField)) {
+                    quantumPane.getChildren().add(agingField);
+                }
+            }
+
+            quantumPane.setVisible(isRoundRobin || isMLFQ);
+            quantumPane.setManaged(isRoundRobin || isMLFQ);
         });
+
+        exportButton = new Button("Export to CSV");
+        exportButton.setOnAction(e -> exportToCSV());
+        Pane parent = (Pane) avgWaitingTimeLabel.getParent();
+        if (parent != null && !parent.getChildren().contains(exportButton)) {
+            parent.getChildren().add(exportButton);
+        }
+
+        // Wrap Gantt chart in a ScrollPane to prevent it from breaking the layout
+        Pane ganttParent = (Pane) ganttChartBox.getParent();
+        if (ganttParent != null) {
+            int ganttChartIndex = ganttParent.getChildren().indexOf(ganttChartBox);
+            if (ganttChartIndex != -1) {
+                ganttParent.getChildren().remove(ganttChartIndex);
+                ScrollPane ganttScrollPane = new ScrollPane(ganttChartBox);
+                ganttScrollPane.setFitToHeight(true);
+                ganttParent.getChildren().add(ganttChartIndex, ganttScrollPane);
+            }
+        }
     }
 
     @FXML
@@ -147,12 +202,53 @@ public class MainController {
                 SRTScheduler.schedule(processesToSchedule);
                 break;
             case "Multilevel Feedback Queue (MLFQ)":
-                MLFQScheduler.schedule(processesToSchedule);
+                try {
+                    if (quantumField.getText().trim().isEmpty() || quantumField2.getText().trim().isEmpty() || agingField.getText().trim().isEmpty()) {
+                        showAlert(Alert.AlertType.ERROR, "For MLFQ, please enter values for both time quantums and the aging threshold.");
+                        return;
+                    }
+                    int quantum1 = Integer.parseInt(quantumField.getText().trim());
+                    int quantum2 = Integer.parseInt(quantumField2.getText().trim());
+                    int agingThreshold = Integer.parseInt(agingField.getText().trim());
+                    if (quantum1 <= 0 || quantum2 <= 0 || agingThreshold <= 0) {
+                        showAlert(Alert.AlertType.ERROR, "Time quantums and aging threshold must be positive integers.");
+                        return;
+                    }
+                    MLFQScheduler.schedule(processesToSchedule, quantum1, quantum2, agingThreshold);
+                } catch (NumberFormatException e) {
+                    showAlert(Alert.AlertType.ERROR, "Please enter valid numbers for the time quantums and aging threshold.");
+                    return;
+                }
                 break;
         }
 
         updateTableAndAverages();
         updateGanttChart();
+    }
+
+    private void exportToCSV() {
+        if (processList.isEmpty()) {
+            showAlert(Alert.AlertType.INFORMATION, "No data to export.");
+            return;
+        }
+
+        try (FileWriter writer = new FileWriter("process_results.csv")) {
+            writer.append("Name,Arrival Time,Burst Time,Finish Time,Turnaround Time,Waiting Time,Response Time\n");
+
+            for (Process p : processList) {
+                writer.append(p.getName()).append(",")
+                      .append(String.valueOf(p.getArrivalTime())).append(",")
+                      .append(String.valueOf(p.getBurstTime())).append(",")
+                      .append(String.valueOf(p.getFinishTime())).append(",")
+                      .append(String.valueOf(p.getTurnaroundTime())).append(",")
+                      .append(String.valueOf(p.getWaitingTime())).append(",")
+                      .append(String.valueOf(p.getResponseTime())).append("\n");
+            }
+            showAlert(Alert.AlertType.INFORMATION, "Data exported successfully to process_results.csv");
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Error exporting data to CSV file.");
+            e.printStackTrace();
+        }
     }
 
     private void updateTableAndAverages() {
@@ -205,6 +301,12 @@ public class MainController {
         arrivalTimeField.clear();
         burstTimeField.clear();
         quantumField.clear();
+        if (quantumField2 != null) {
+            quantumField2.clear();
+        }
+        if (agingField != null) {
+            agingField.clear();
+        }
         avgWaitingTimeLabel.setText("Average Waiting Time: ");
         avgTurnaroundTimeLabel.setText("Average Turnaround Time: ");
         avgResponseTimeLabel.setText("Average Response Time: ");

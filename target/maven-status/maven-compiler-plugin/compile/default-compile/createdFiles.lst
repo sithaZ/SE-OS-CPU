@@ -1,0 +1,9 @@
+com\example\HomePageController.class
+com\example\scheduling\SRTScheduler.class
+com\example\scheduling\SjfScheduler.class
+com\example\scheduling\MLFQScheduler.class
+com\example\App.class
+com\example\scheduling\RoundRobinScheduler.class
+com\example\MainController.class
+com\example\model\Process.class
+com\example\scheduling\FcfsScheduler.class
