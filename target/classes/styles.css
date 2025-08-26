@@ -57,26 +57,25 @@
 /* Buttons */
 .button {
     -fx-background-radius: 25px;
-    -fx-text-fill: rgb(12, 0, 0);
+    -fx-text-fill: white;
     -fx-font-size: 15px;
     -fx-font-weight: bold;
-    -fx-background-color: #ffffff;
+    -fx-background-color: #263f73;
     -fx-padding: 10px 20px;
     -fx-border-width: 0;
     -fx-cursor: hand;
 }
 
 .action-button:hover {
-    -fx-background-color: linear-gradient(to bottom right, #007bff, #008cff);
+    -fx-background-color: linear-gradient(to bottom right, #2e50f9, #0015ff);
 }
 
 .reset-button:hover {
-    -fx-background-color: linear-gradient(to bottom right, #ffebee, #ffcbca);
+    -fx-background-color: linear-gradient(to bottom right, #eb5369, #ff231f);
 }
 .export-button:hover {
-    -fx-background-color: linear-gradient(to bottom right, #00ff2b, #00ff26);
+    -fx-background-color: linear-gradient(to bottom right, #18b510, #51ff00);
 }
-
 /* Inputs (TextField, ComboBox) */
 .text-field, .combo-box {
     -fx-background-radius: 8px;

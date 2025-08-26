@@ -1,0 +1,5 @@
+Name,Arrival Time,Burst Time,Finish Time,Turnaround Time,Waiting Time,Response Time
+P1,1,4,11,10,6,0
+P2,2,3,9,7,4,0
+P3,3,2,10,7,5,0
+P4,4,1,5,1,0,0

@@ -1,6 +1,6 @@
 # CPU Scheduling Algorithm Visualizer
 
-![CPU Visualizer](src/main/resources/image/cpus.jpg)
+![CPU Visualizer](src/main/resources/image/image.png)
 
 A JavaFX application that visualizes various CPU scheduling algorithms. Users can input processes, select an algorithm, and view the results in a summary table and a Gantt chart.
 
