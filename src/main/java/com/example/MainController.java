@@ -112,9 +112,9 @@ public class MainController {
                     quantumPane.getChildren().remove(agingField);
                 }
             } else if (isMLFQ) {
-                quantumField.setPromptText("Quantum 1 (Q1)");
-                quantumField2.setPromptText("Quantum 2 (Q2)");
-                agingField.setPromptText("Aging Threshold");
+                quantumField.setPromptText("Queue 0 (Priority: Highest) - RR");
+                quantumField2.setPromptText("Queue 1 (Priority: Mediuim) - RR");
+                agingField.setPromptText("Queue 2 (Priority: Lowest) - FCFS");
                 if (!quantumPane.getChildren().contains(quantumField2)) {
                     quantumPane.getChildren().add(quantumField2);
                 }
@@ -128,6 +128,7 @@ public class MainController {
         });
 
         exportButton = new Button("Export to CSV");
+        exportButton.getStyleClass().add("export-button");
         exportButton.setOnAction(e -> exportToCSV());
         Pane parent = (Pane) avgWaitingTimeLabel.getParent();
         if (parent != null && !parent.getChildren().contains(exportButton)) {
