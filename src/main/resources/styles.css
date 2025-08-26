@@ -67,13 +67,15 @@
 }
 
 .action-button:hover {
-    -fx-background-color: linear-gradient(to bottom right, #000000, #000000);
+    -fx-background-color: linear-gradient(to bottom right, #2e50f9, #0015ff);
 }
 
 .reset-button:hover {
-    -fx-background-color: linear-gradient(to bottom right, #ffebee, #ffcbca);
+    -fx-background-color: linear-gradient(to bottom right, #eb5369, #ff231f);
 }
-
+.export-button:hover {
+    -fx-background-color: linear-gradient(to bottom right, #18b510, #51ff00);
+}
 /* Inputs (TextField, ComboBox) */
 .text-field, .combo-box {
     -fx-background-radius: 8px;

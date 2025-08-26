@@ -129,6 +129,7 @@ public class MainController {
 
         exportButton = new Button("Export to CSV");
         exportButton.getStyleClass().add("export-button");
+        exportButton.getStyleClass().add("export-button"); 
         exportButton.setOnAction(e -> exportToCSV());
         Pane parent = (Pane) avgWaitingTimeLabel.getParent();
         if (parent != null && !parent.getChildren().contains(exportButton)) {
